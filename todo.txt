@@ -1,9 +1,3 @@
-* wp_get_revisions to use number of revs
-
-* table
-	* remove quick edit and trash
-	* find some way to hide the checkboxes
-
 * trash
 	* don't show revisions on the trash page
 

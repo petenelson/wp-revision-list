@@ -42,6 +42,7 @@ if ( !class_exists( 'WP_Revision_List_Table' ) ) {
 		private function add_revisions_to_posts( $posts ) {
 
 			$screen = get_current_screen();
+			$is_trash = filter_input( INPUT_GET, 'post_status', FILTER_SANITIZE_STRING );
 			if ( $screen->base == 'edit' && $screen->post_type == $posts[0]->post_type ) {
 
 				$new_post_list = array();
@@ -49,9 +50,11 @@ if ( !class_exists( 'WP_Revision_List_Table' ) ) {
 
 				foreach ($posts as $post) {
 					$new_post_list[] = $post;
-					foreach( $revisions as $revision ) {
-						if ( $revision->post_parent === $post->ID ) {
-							$new_post_list[] = $revision;
+					if ( ! $is_trash ) {
+						foreach( $revisions as $revision ) {
+							if ( $revision->post_parent === $post->ID ) {
+								$new_post_list[] = $revision;
+							}
 						}
 					}
 				}

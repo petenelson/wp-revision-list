@@ -1,5 +1,3 @@
-* trash
-	* don't show revisions on the trash page
 
 * uninstall
 

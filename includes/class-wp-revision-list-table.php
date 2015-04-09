@@ -32,7 +32,8 @@ if ( !class_exists( 'WP_Revision_List_Table' ) ) {
 
 
 		private function get_selected_post_types() {
-			return array( 'post', 'page' );
+			$post_types = apply_filters( 'wp-revision-list-setting-get', array( 'post', 'page'), 'wp-revision-list-settings-general', 'post_types' );
+			return ! array( $post_types ) ? array() : $post_types;
 		}
 
 
@@ -41,31 +42,44 @@ if ( !class_exists( 'WP_Revision_List_Table' ) ) {
 			$screen = get_current_screen();
 			if ( $screen->base == 'edit' && $screen->post_type == $posts[0]->post_type ) {
 
-				$post_index = 0;
+				$new_post_list = array();
+				$revisions = $this->get_revisions_for_posts( $posts );
 
-				foreach( $posts as $post ) {
-
-					$revisions = array();
-					foreach ( wp_get_post_revisions( $post->ID ) as $revision ) {
-						$revisions[] = new WP_Post( $revision );
+				foreach ($posts as $post) {
+					$new_post_list[] = $post;
+					foreach( $revisions as $revision ) {
+						if ( $revision->post_parent === $post->ID ) {
+							$new_post_list[] = $revision;
+						}
 					}
+				}
 
-					if ( ! empty( $revisions ) ) {
-						array_splice( $posts, $post_index + 1, 0, $revisions );
-					}
+			}
 
-					$post_index++;
+			return $new_post_list;
+		}
+
+
+		private function get_revisions_for_posts( $posts ) {
+			$number_of_revisions = apply_filters( 'wp-revision-list-setting-get', 3, 'wp-revision-list-settings-general', 'number_of_revisions' );
+
+			$revisions = array();
+			foreach( $posts as $post ) {
+				foreach ( wp_get_post_revisions( $post->ID, array( 'posts_per_page' => $number_of_revisions ) ) as $revision ) {
+					$revisions[] = new WP_Post( $revision );
 				}
 			}
 
-			return $posts;
+			return $revisions;
 		}
 
 
 		public function the_title( $parent_post_title, $parent_ID ) {
 			global $post;
 			if ( $post->post_type == 'revision' ) {
-				return  '* ' . $parent_post_title . ' (Rev)';
+				$prefix = apply_filters( 'wp-revision-list-setting-get', '* ', 'wp-revision-list-settings-general', 'prefix' );
+				$suffix = apply_filters( 'wp-revision-list-setting-get', ' (Rev)', 'wp-revision-list-settings-general', 'suffix' );
+				return  $prefix . $parent_post_title . $suffix;
 			} else {
 				return $parent_post_title;
 			}

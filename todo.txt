@@ -1,9 +1,13 @@
-* Add settings page
-	* configurable post types
-	* prefix
-	* suffix
+* wp_get_revisions to use number of revs
 
-* add sanitize_callback  to settings
+* table
+	* remove quick edit and trash
+	* find some way to hide the checkboxes
 
+* trash
+	* don't show revisions on the trash page
 
 * uninstall
+
+* screen option to turn off revision list per user, set number of revisions to display per user
+

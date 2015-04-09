@@ -19,8 +19,19 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 			add_action( 'admin_notices', array( $this, 'activation_admin_notice' ) );
 
+			add_action( 'init', array( $this, 'test_custom_post_type' ) );
+
 			add_filter( self::$plugin_name . '-setting-is-enabled', array( $this, 'setting_is_enabled' ), 10, 3 );
 			add_filter( self::$plugin_name . '-setting-get', array( $this, 'setting_get' ), 10, 3 );
+		}
+
+
+		public function test_custom_post_type() {
+			register_post_type( 'wp-rev-cpt', array(
+				'label' => 'Test Revision CPT',
+				'public' => true,
+				'supports' => array( 'title', 'editor', 'revisions' ),
+			));
 		}
 
 
@@ -30,8 +41,8 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			add_option( $this->settings_key_general, array(
 					'number_of_revisions'  => 3,
 					'post_types'           =>array( 'post', 'page' ),
-					'prefix'               => '*',
-					'suffix'               => '(Rev)',
+					'prefix'               => '* ',
+					'suffix'               => ' (Rev)',
 				), '', $autoload = 'no' );
 
 			// add an option so we can show the activated admin notice
@@ -68,7 +79,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			$key = $this->settings_key_general;
 			$this->plugin_settings_tabs[$key] = __( 'General', 'wp-revision-list' );
 
-			register_setting( $key, $key );
+			register_setting( $key, $key, array( $this, 'sanitize_general_settings') );
 
 			$section = 'general';
 
@@ -76,6 +87,34 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 
 			add_settings_field( 'number_of_revisions', __( 'Number of revisions to display', 'wp-revision-list' ), array( $this, 'settings_input' ), $key, $section,
 				array( 'key' => $key, 'name' => 'number_of_revisions', 'size' => 2, 'maxlength' => 2 ) );
+
+			add_settings_field( 'prefix', __( 'Prefix title with', 'wp-revision-list' ), array( $this, 'settings_input' ), $key, $section,
+				array( 'key' => $key, 'name' => 'prefix', 'size' => 2, 'maxlength' => 20 ) );
+
+			add_settings_field( 'suffix', __( 'Suffix title with', 'wp-revision-list' ), array( $this, 'settings_input' ), $key, $section,
+				array( 'key' => $key, 'name' => 'suffix', 'size' => 10, 'maxlength' => 20 ) );
+
+			$items = array();
+			foreach( get_post_types( array(), 'objects' ) as $post_type => $data ) {
+				if ( post_type_supports( $post_type, 'revisions' ) ) {
+					$items[ $post_type ] = $data->labels->name . ' (' . $post_type . ')';
+				}
+			}
+
+
+			add_settings_field( 'post_types', __( 'Post Types', 'wp-revision-list' ), array( $this, 'settings_checkbox_list' ), $key, $section,
+				array( 'key' => $key, 'name' => 'post_types', 'items' => $items, 'legend' => __( 'Post Types', 'wp-revision-list' ) ) );
+		}
+
+
+		public function sanitize_general_settings( $settings ) {
+
+			$settings['number_of_revisions'] = intval( $settings['number_of_revisions'] );
+			if ( $settings['number_of_revisions'] < 0 ) {
+				$settings['number_of_revisions'] = 0;
+			}
+
+			return $settings;
 		}
 
 
@@ -121,6 +160,52 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			if ( !empty( $args['after'] ) ) {
 				echo '<div>' . __( $args['after'], 'wp-revision-list' ) . '</div>';
 			}
+
+		}
+
+
+		public function settings_checkbox_list( $args ) {
+			$args = wp_parse_args( $args,
+				array(
+					'name' => '',
+					'key' => '',
+					'items' => array(),
+					'after' => '',
+					'legend' => '',
+				)
+			);
+
+			$name = $args['name'];
+			$key = $args['key'];
+			$items = $args['items'];
+			$option = get_option( $key );
+			$values = isset( $option[$name] ) ? $option[$name] : '';
+			if ( ! is_array( $values ) ) {
+				$values = array();
+			}
+
+			?>
+				<fieldset>
+					<legend class="screen-reader-text">
+						<?php echo esc_html( $args['legend'] ) ?>
+					</legend>
+			<?php
+
+			foreach ( $items as $post_type => $post_type_dispay ) {
+
+				?>
+					<label>
+						<input type="checkbox" name="<?php echo $key ?>[<?php echo $name ?>][]" value="<?php echo $post_type ?>"<?php echo in_array( $post_type, $values) ? ' checked="checked"' : ''  ?> />
+						<?php echo esc_html( $post_type_dispay ); ?>
+					</label>
+					<br/>
+				<?php
+
+			}
+
+			?>
+				</fieldset>
+			<?php
 
 		}
 

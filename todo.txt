@@ -1,0 +1,9 @@
+* Add settings page
+	* configurable post types
+	* prefix
+	* suffix
+
+* add sanitize_callback  to settings
+
+
+* uninstall

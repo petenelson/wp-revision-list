@@ -1,79 +1,40 @@
 <?php
 /*
-Plugin Name: Revisions in List Table
-Description: Description
+Plugin Name: WP Revision List
+Description: Show revisions when viewing lists or posts, pages, or custom post types in the admin dashboard
 Author: Pete Nelson
-Version: 1.0
+Version: 0.5
 */
 
-if ( ! defined( 'ABSPATH' ) ) exit( 'restricted access');
+if ( ! defined( 'ABSPATH' ) ) exit( 'restricted access' );
 
 
-add_filter( 'the_posts', 'pn_the_posts' );
-add_filter( 'the_title', 'pn_the_title', 10, 2 );
-add_action( 'init', 'pn_custom_post_type' );
+// load the text domain
+add_action( 'plugins_loaded', 'WPAnyIpsum_LoadTextDomain' );
 
-
-function pn_the_posts( $posts ) {
-
-	if ( is_admin() && ! empty( $posts ) ) {
-
-		// limit addition of revisions to only specific post types
-		$post_types = array( 'post', 'page', 'my-post-type', 'gmec-product-price' );
-
-		if ( in_array( $posts[0]->post_type, $post_types ) ) {
-			$posts = pn_add_revisions_to_posts( $posts );
-		}
-
+if ( ! function_exists( 'wp_revision_list_load_text_domain' ) ) {
+	function wp_revision_list_load_text_domain() {
+		load_plugin_textdomain( 'wp-revision-list', false, basename( plugin_dir_path( __FILE__ ) ) . '/lang/' );
 	}
-
-	return $posts;
-
 }
 
 
-function pn_add_revisions_to_posts( $posts ) {
-
-	$screen = get_current_screen();
-	if ( $screen->base == 'edit' && $screen->post_type == $posts[0]->post_type ) {
-
-		$post_index = 0;
-
-		foreach( $posts as $post ) {
-
-			$revisions = array();
-			foreach ( wp_get_post_revisions( $post->ID ) as $revision ) {
-				$revisions[] = new WP_Post( $revision );
-			}
-
-			if ( ! empty( $revisions ) ) {
-				array_splice( $posts, $post_index + 1, 0, $revisions );
-			}
-
-			$post_index++;
-		}
-	}
-
-	return $posts;
+// include required files
+$includes = array( 'settings', 'table' );
+foreach ( $includes as $include ) {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wp-revision-list-' . $include . '.php';
 }
 
 
-function pn_the_title( $parent_post_title, $parent_ID ) {
-	global $post;
-	if ( $post->post_type == 'revision' ) {
-		return  '* ' . $parent_post_title . ' (Rev)';
-	} else {
-		return $parent_post_title;
-	}
-
+// load our classes, hook them to WordPress
+if ( class_exists( 'WP_Revision_List_Settings' ) ) {
+	$revision_settings = new WP_Revision_List_Settings();
+	add_action( 'plugins_loaded', array( $revision_settings, 'plugins_loaded' ) );
+	register_activation_hook( __FILE__, array( $revision_settings, 'activation_hook' ) );
 }
 
 
-function pn_custom_post_type() {
-	register_post_type( 'my-post-type', array(
-		'public' => true,
-		'label' => 'My CPT',
-		'supports' => array( 'title', 'author', 'editor', 'revisions' ),
-	));
+if ( class_exists( 'WP_Revision_List_Table' ) ) {
+	$revision_table = new WP_Revision_List_Table();
+	add_action( 'plugins_loaded', array( $revision_table, 'plugins_loaded' ) );
 }
-

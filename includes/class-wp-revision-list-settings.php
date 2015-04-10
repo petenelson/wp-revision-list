@@ -6,10 +6,9 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 
 	class WP_Revision_List_Settings {
 
-		static $plugin_name = 'wp-revision-list';
-
-		private $settings_page    = 'wp-revision-list-settings';
+		private $settings_page         = 'wp-revision-list-settings';
 		private $settings_key_general  = 'wp-revision-list-settings-general';
+		private $settings_key_help     = 'wp-revision-list-settings-help';
 		private $plugin_settings_tabs  = array();
 
 
@@ -19,8 +18,8 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 			add_action( 'admin_notices', array( $this, 'activation_admin_notice' ) );
 
-			add_filter( self::$plugin_name . '-setting-is-enabled', array( $this, 'setting_is_enabled' ), 10, 3 );
-			add_filter( self::$plugin_name . '-setting-get', array( $this, 'setting_get' ), 10, 3 );
+			add_filter( WP_Revision_List_Core::$plugin_name . '-setting-is-enabled', array( $this, 'setting_is_enabled' ), 10, 3 );
+			add_filter( WP_Revision_List_Core::$plugin_name . '-setting-get', array( $this, 'setting_get' ), 10, 3 );
 		}
 
 
@@ -35,20 +34,20 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 				), '', $autoload = 'no' );
 
 			// add an option so we can show the activated admin notice
-			add_option( self::$plugin_name . '-plugin-activated', '1' );
+			add_option( WP_Revision_List_Core::$plugin_name . '-plugin-activated', '1' );
 
 		}
 
 
 		public function activation_admin_notice() {
-			if ( '1' === get_option( self::$plugin_name . '-plugin-activated' ) ) { ?>
+			if ( '1' === get_option( WP_Revision_List_Core::$plugin_name . '-plugin-activated' ) ) { ?>
 					<div class="updated">
 						<p><?php
 				echo sprintf( __( '<strong>Revision List activated!</strong> Please <a href="%s">visit the Settings page</a> to customize your revision list.', 'wp-revision-list' ), admin_url( 'options-general.php?page=wp-revision-list-settings' ) );
 				?></p>
 					</div>
 				<?php
-				delete_option( self::$plugin_name . '-plugin-activated' );
+				delete_option( WP_Revision_List_Core::$plugin_name . '-plugin-activated' );
 			}
 		}
 
@@ -60,7 +59,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 
 		public function admin_init() {
 			$this->register_general_settings();
-			//$this->register_help_tab();
+			$this->register_help_tab();
 		}
 
 
@@ -74,8 +73,8 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 
 			add_settings_section( $section, '', array( $this, 'section_header' ), $key );
 
-			add_settings_field( 'number_of_revisions', __( 'Number of revisions to display', 'wp-revision-list' ), array( $this, 'settings_input' ), $key, $section,
-				array( 'key' => $key, 'name' => 'number_of_revisions', 'size' => 2, 'maxlength' => 2 ) );
+			add_settings_field( 'number_of_revisions', __( 'Default number of revisions to display', 'wp-revision-list' ), array( $this, 'settings_input' ), $key, $section,
+				array( 'key' => $key, 'name' => 'number_of_revisions', 'size' => 2, 'maxlength' => 2, 'min' => 0, 'max' => 99, 'type' => 'number', 'after' => __( 'Users can chose their own setting in Screen Options', 'wp-revision-list' ) ) );
 
 			add_settings_field( 'prefix', __( 'Prefix title with', 'wp-revision-list' ), array( $this, 'settings_input' ), $key, $section,
 				array( 'key' => $key, 'name' => 'prefix', 'size' => 2, 'maxlength' => 20 ) );
@@ -107,6 +106,15 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 		}
 
 
+		private function register_help_tab() {
+			$key = $this->settings_key_help;
+			$this->plugin_settings_tabs[$key] =  __( 'Help' );
+			register_setting( $key, $key );
+			$section = 'help';
+			add_settings_section( $section, '', array( $this, 'section_header' ), $key );
+		}
+
+
 		public function setting_is_enabled( $enabled, $key, $setting ) {
 			return '1' === $this->setting_get( '0', $key, $setting );
 		}
@@ -126,35 +134,41 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 
 		public function settings_input( $args ) {
 
-			$args = wp_parse_args( $args,
+			extract( wp_parse_args( $args,
 				array(
 					'name' => '',
 					'key' => '',
 					'maxlength' => 50,
 					'size' => 30,
 					'after' => '',
+					'type' => 'text',
+					'min' => 0,
+					'max' => 0,
+					'step' => 1,
 				)
-			);
+			) );
 
-
-			$name = $args['name'];
-			$key = $args['key'];
-			$size = $args['size'];
-			$maxlength = $args['maxlength'];
 
 			$option = get_option( $key );
 			$value = isset( $option[$name] ) ? esc_attr( $option[$name] ) : '';
 
-			echo "<div><input id='{$name}' name='{$key}[{$name}]'  type='text' value='" . $value . "' size='{$size}' maxlength='{$maxlength}' /></div>";
-			if ( !empty( $args['after'] ) ) {
-				echo '<div>' . __( $args['after'], 'wp-revision-list' ) . '</div>';
+			$min_max_step = '';
+			if ( $type === 'number' ) {
+				$min = intval( $args['min'] );
+				$max = intval( $args['max'] );
+				$step = intval( $args['step'] );
+				$min_max_step = " step='{$step}' min='{$min}' max='{$max}' ";
 			}
+
+			echo "<div><input id='{$name}' name='{$key}[{$name}]'  type='{$type}' value='" . $value . "' size='{$size}' maxlength='{$maxlength}' {$min_max_step} /></div>";
+
+			$this->output_after( $after );
 
 		}
 
 
 		public function settings_checkbox_list( $args ) {
-			$args = wp_parse_args( $args,
+			extract( wp_parse_args( $args,
 				array(
 					'name' => '',
 					'key' => '',
@@ -162,11 +176,8 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 					'after' => '',
 					'legend' => '',
 				)
-			);
+			) );
 
-			$name = $args['name'];
-			$key = $args['key'];
-			$items = $args['items'];
 			$option = get_option( $key );
 			$values = isset( $option[$name] ) ? $option[$name] : '';
 			if ( ! is_array( $values ) ) {
@@ -176,7 +187,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			?>
 				<fieldset>
 					<legend class="screen-reader-text">
-						<?php echo esc_html( $args['legend'] ) ?>
+						<?php echo esc_html( $legend ) ?>
 					</legend>
 
 			<?php
@@ -198,7 +209,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 
 		public function settings_textarea( $args ) {
 
-			$args = wp_parse_args( $args,
+			extract( wp_parse_args( $args,
 				array(
 					'name' => '',
 					'key' => '',
@@ -206,51 +217,50 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 					'cols' => 40,
 					'after' => '',
 				)
-			);
+			) );
 
-
-			$name = $args['name'];
-			$key = $args['key'];
-			$rows = $args['rows'];
-			$cols = $args['cols'];
 
 			$option = get_option( $key );
 			$value = isset( $option[$name] ) ? esc_attr( $option[$name] ) : '';
 
 			echo "<div><textarea id='{$name}' name='{$key}[{$name}]' rows='{$rows}' cols='{$cols}'>" . $value . "</textarea></div>";
-			if ( !empty( $args['after'] ) ) {
-				echo '<div>' . $args['after'] . '</div>';
-			}
+
+			$this->output_after( $after );
 
 		}
 
 
 		public function settings_yes_no( $args ) {
 
-			$args = wp_parse_args( $args,
+			extract( wp_parse_args( $args,
 				array(
 					'name' => '',
 					'key' => '',
 					'after' => '',
 				)
-			);
-
-			$name = $args['name'];
-			$key = $args['key'];
+			) );
 
 			$option = get_option( $key );
 			$value = isset( $option[$name] ) ? esc_attr( $option[$name] ) : '';
 
-			if ( empty( $value ) )
+			if ( empty( $value ) ) {
 				$value = '0';
+			}
 
 			echo '<div>';
 			echo "<label><input id='{$name}_1' name='{$key}[{$name}]'  type='radio' value='1' " . ( '1' === $value ? " checked=\"checked\"" : "" ) . "/>" . __( 'Yes', 'wp-revision-list' ) . "</label> ";
 			echo "<label><input id='{$name}_0' name='{$key}[{$name}]'  type='radio' value='0' " . ( '0' === $value ? " checked=\"checked\"" : "" ) . "/>" . __( 'No', 'wp-revision-list' ) . "</label> ";
 			echo '</div>';
 
-			if ( !empty( $args['after'] ) )
-				echo '<div>' . __( $args['after'], 'wp-revision-list' ) . '</div>';
+			$this->output_after( $after );
+
+		}
+
+
+		private function output_after( $after ) {
+			if ( !empty( $after ) ) {
+				echo '<div>' . $after . '</div>';
+			}
 		}
 
 
@@ -304,12 +314,12 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 		public function section_header( $args ) {
 
 			switch ( $args['id'] ) {
-			case 'help';
-				include_once 'admin-help.php';
-				break;
+				case 'help';
+					include_once 'partials/admin-help.php';
+					break;
 			}
 
-			if ( !empty( $output ) ) {
+			if ( ! empty( $output ) ) {
 				echo '<p class="settings-section-header">' . $output . '</p>';
 			}
 

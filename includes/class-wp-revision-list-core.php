@@ -27,7 +27,7 @@ if ( ! class_exists( 'WP_Revision_List_Core' ) ) {
 
 		public function user_number_of_revisions( $revisions, $post_type ) {
 			$revisions = get_user_meta( get_current_user_id(), 'wp_revision_list_number_of_revisions_' . $post_type, true );
-			return ( $revisions === false || $number_of_revisions === NULL ) ? $this->config_number_of_revisions() : intval( $revisions );
+			return ( $revisions === false || $revisions === NULL ) ? $this->config_number_of_revisions() : intval( $revisions );
 		}
 
 

@@ -23,7 +23,7 @@ Only post types that support revisions work with this plugin.  Make sure you inc
 
 ## Changelog
 
-### 1.1.0 April 10, 2015
+### 1.1.1 April 10, 2015
 - Added user-configurable number of revisions in Screen Options
 
 ### v1.0 April 9 2015

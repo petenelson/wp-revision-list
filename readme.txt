@@ -24,7 +24,7 @@ to limit the number of revisions shown, the post types it is enabled for, and a 
 
 == Changelog ==
 
-= 1.1.0 April 10, 2015 =
+= 1.1.1 April 10, 2015 =
 * Added user-configurable number of revisions in Screen Options
 
 = 1.0.0 April 9, 2015 =

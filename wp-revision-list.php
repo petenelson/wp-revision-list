@@ -12,7 +12,7 @@ Domain Path: /lang
 if ( ! defined( 'ABSPATH' ) ) exit( 'restricted access' );
 
 // load the text domain
-add_action( 'plugins_loaded', 'WPAnyIpsum_LoadTextDomain' );
+add_action( 'plugins_loaded', 'wp_revision_list_load_text_domain' );
 
 if ( ! function_exists( 'wp_revision_list_load_text_domain' ) ) {
 	function wp_revision_list_load_text_domain() {

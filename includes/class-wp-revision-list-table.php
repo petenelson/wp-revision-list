@@ -12,6 +12,7 @@ if ( !class_exists( 'WP_Revision_List_Table' ) ) {
 			add_filter( 'the_title', array( $this, 'the_title' ), 10, 2 );
 			add_filter( 'post_row_actions', array( $this, 'post_row_actions' ), 10, 2 );
 			add_action( 'admin_footer', array( $this, 'admin_footer' ) );
+			add_action( 'admin_init', array( $this, 'admin_init' ) );
 		}
 
 
@@ -100,10 +101,16 @@ if ( !class_exists( 'WP_Revision_List_Table' ) ) {
 			return $actions;
 		}
 
+
+		private function is_revision_list_screen() {
+			$screen = get_current_screen();
+			return $screen->base == 'edit' && in_array( $screen->post_type, $this->get_selected_post_types() );
+		}
+
+
 		public function admin_footer() {
 
-			$screen = get_current_screen();
-			if ( $screen->base == 'edit' && in_array( $screen->post_type, $this->get_selected_post_types() ) ) {
+			if ( $this->is_revision_list_screen() ) {
 				?>
 				<script type="text/javascript">
 					jQuery(document).ready(function() {
@@ -112,6 +119,10 @@ if ( !class_exists( 'WP_Revision_List_Table' ) ) {
 				</script>
 				<?php
 			}
+		}
+		public function admin_init() {
+
+
 		}
 
 

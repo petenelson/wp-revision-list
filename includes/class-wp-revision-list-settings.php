@@ -55,7 +55,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			if ( '1' === get_option( self::$plugin_name . '-plugin-activated' ) ) { ?>
 					<div class="updated">
 						<p><?php
-				echo sprintf( __( '<strong>WP Revision List activated!</strong> Please <a href="%s">visit the Settings page</a> to customize your revision list.', 'wp-revision-list' ), admin_url( 'options-general.php?page=wp-revision-list-settings' ) );
+				echo sprintf( __( '<strong>Revision List activated!</strong> Please <a href="%s">visit the Settings page</a> to customize your revision list.', 'wp-revision-list' ), admin_url( 'options-general.php?page=wp-revision-list-settings' ) );
 				?></p>
 					</div>
 				<?php
@@ -189,10 +189,9 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 					<legend class="screen-reader-text">
 						<?php echo esc_html( $args['legend'] ) ?>
 					</legend>
+
 			<?php
-
 			foreach ( $items as $post_type => $post_type_dispay ) {
-
 				?>
 					<label>
 						<input type="checkbox" name="<?php echo $key ?>[<?php echo $name ?>][]" value="<?php echo $post_type ?>"<?php echo in_array( $post_type, $values) ? ' checked="checked"' : ''  ?> />
@@ -200,9 +199,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 					</label>
 					<br/>
 				<?php
-
 			}
-
 			?>
 				</fieldset>
 			<?php

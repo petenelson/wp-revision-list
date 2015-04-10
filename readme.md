@@ -2,6 +2,8 @@
 
 WordPress plugin to show revisions when viewing lists of posts, pages, or custom post types in the admin dashboard
 
+[![Code Climate](https://codeclimate.com/github/petenelson/wp-revision-list/badges/gpa.svg)](https://codeclimate.com/github/petenelson/wp-revision-list)
+
 ## Description
 
 This WordPress plugin allows you to include a list of revisions when viewing a list of posts, pages, or custom post types in the admin dashboard.  It can be configured

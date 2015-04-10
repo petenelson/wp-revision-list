@@ -24,6 +24,9 @@ to limit the number of revisions shown, the post types it is enabled for, and a 
 
 == Changelog ==
 
+= 1.1.0 April 10, 2015 =
+* Added user-configurable number of revisions in Screen Options
+
 = 1.0.0 April 9, 2015 =
 * Initial release
 
@@ -45,3 +48,4 @@ Only post types that support revisions work with this plugin.  Make sure you inc
 1. Posts showing revisions
 2. Custom post type support
 3. Plugin settings
+4. Number of revisions configurable per user

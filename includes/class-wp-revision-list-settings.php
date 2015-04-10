@@ -19,19 +19,8 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 			add_action( 'admin_notices', array( $this, 'activation_admin_notice' ) );
 
-			add_action( 'init', array( $this, 'test_custom_post_type' ) );
-
 			add_filter( self::$plugin_name . '-setting-is-enabled', array( $this, 'setting_is_enabled' ), 10, 3 );
 			add_filter( self::$plugin_name . '-setting-get', array( $this, 'setting_get' ), 10, 3 );
-		}
-
-
-		public function test_custom_post_type() {
-			register_post_type( 'wp-rev-cpt', array(
-				'label' => 'Test Revision CPT',
-				'public' => true,
-				'supports' => array( 'title', 'editor', 'revisions' ),
-			));
 		}
 
 

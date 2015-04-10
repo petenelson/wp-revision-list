@@ -1,5 +1,1 @@
-
-* uninstall
-
 * screen option to turn off revision list per user, set number of revisions to display per user
-

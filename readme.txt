@@ -15,6 +15,9 @@ Show revisions when viewing lists of posts, pages, or custom post types in the a
 This plugin allows you to include a list of revisions when viewing a list of posts, pages, or custom post types in the admin dashboard.  It can be configured
 to limit the number of revisions shown, the post types it is enabled for, and a prefix & suffix to wrap around the revision title to offset it from the rest of the list.
 
+Thanks to [Pat Ramsey](https://twitter.com/pat_ramsey), [Corey Ellis](https://twitter.com/zzramesses), and [Nick Batick](https://twitter.com/Nick_Batik) for
+encouraging me to write this plugin, and [Kenzie Moss](https://twitter.com/kenziemoss) for our WordPress icon.
+
 == Installation ==
 
 1. Upload the wp-revision-list directory to the `/wp-content/plugins/` directory

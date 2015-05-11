@@ -31,3 +31,10 @@ Only post types that support revisions work with this plugin.  Make sure you inc
 
 ### v1.0 April 9 2015
 - Initial Release
+
+## Roadmap
+
+- Remove comments icons in the list table for revisions
+
+Pull requests are encouraged and welcome!
+

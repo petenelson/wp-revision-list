@@ -4,7 +4,7 @@ Tags: admin, post, page, custom post type, revisions
 Donate link: http://petenelson.com/
 Requires at least: 4.0
 Tested up to: 4.2
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,9 @@ encouraging me to write this plugin, and [Kenzie Moss](https://twitter.com/kenzi
 
 == Changelog ==
 
+= 1.1.4 July 9, 2015 =
+* Fixed a bug that was preventing a custom WP_Query from returning posts
+
 = 1.1.3 April 10, 2015 =
 * Added user-configurable number of revisions in Screen Options
 
@@ -36,8 +39,8 @@ encouraging me to write this plugin, and [Kenzie Moss](https://twitter.com/kenzi
 
 == Upgrade Notice ==
 
-= 1.0.0 April 9, 2015 =
-* Initial release
+= 1.1.4 July 9, 2015 =
+* Fixed a bug that was preventing a custom WP_Query from returning posts
 
 
 == Frequently Asked Questions ==

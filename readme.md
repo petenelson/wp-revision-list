@@ -26,6 +26,9 @@ Only post types that support revisions work with this plugin.  Make sure you inc
 
 ## Changelog
 
+### 1.1.4 July 9, 2015
+* Fixed a bug that was preventing a custom WP_Query from returning posts
+
 ### 1.1.3 April 10, 2015
 - Added user-configurable number of revisions in Screen Options
 

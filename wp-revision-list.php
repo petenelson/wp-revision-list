@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Revision List
 Description: Show revisions when viewing lists of posts, pages, or custom post types in the admin dashboard
-Version: 1.1.3
+Version: 1.1.5
 Plugin URI: https://github.com/petenelson/wp-revision-list
 Author: Pete Nelson <a href="https://twitter.com/GunGeekATX">(@GunGeekATX)</a>
 Text Domain: wp-revision-list

@@ -36,7 +36,7 @@ if (!class_exists('WP_Revision_List_Screen_Options')) {
 				<div class="screen-options">
 					<fieldset>
 						<label for="wp_rev_list_number_of_revisions_screen_option"><?php _e( 'Number of revisions to display:', 'wp-revision-list' ); ?></label>
-							<input type="number" step="1" min="0" max="20" name="wp_rev_list_number_of_revisions_screen_option" id="wp_rev_list_number_of_revisions_screen_option" maxlength="2" value="<?php echo $number_of_revisions ?>" />
+							<input type="number" step="1" min="0" max="20" name="wp_rev_list_number_of_revisions_screen_option" id="wp_rev_list_number_of_revisions_screen_option" maxlength="2" value="<?php echo esc_attr( $number_of_revisions ); ?>" />
 							<input type="hidden" name="wp_rev_list_post_type_screen_option" id="wp_rev_list_post_type_screen_option" value="<?php echo esc_attr( $screen->post_type ); ?>" />
 						</label>
 					</fieldset>

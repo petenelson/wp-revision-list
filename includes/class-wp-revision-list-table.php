@@ -73,7 +73,7 @@ if ( !class_exists( 'WP_Revision_List_Table' ) ) {
 		}
 
 
-		public function the_title( $parent_post_title, $parent_ID ) {
+		public function the_title( $parent_post_title, $parent_id = null ) {
 			global $post;
 			if ( $post->post_type == 'revision' && $this->is_revision_list_screen() ) {
 				$prefix = apply_filters( WP_Revision_List_Core::$plugin_name . '-setting-get', '* ', WP_Revision_List_Core::$plugin_name . '-settings-general', 'prefix' );

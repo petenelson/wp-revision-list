@@ -17,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) die( 'restricted access' );
 
 	<h3 class="title"><?php _e( 'Contact', 'wp-revision-list' ); ?></h3>
 	<p>
-		<?php _e( 'E-Mail', 'wp-revision-list' ) ?>: <a href="mailto:pete@petenelson.com">pete@petenelson.com</a><br/>
-		<?php _e( 'Twitter', 'wp-revision-list' ) ?>: <a href="https://twitter.com/GunGeekATX" target="_blank">@GunGeekATX</a><br/>
-		<?php _e( 'GitHub', 'wp-revision-list' ) ?>: <a href="https://github.com/petenelson/wp-revision-list" target="_blank">https://github.com/petenelson/wp-revision-list</a><br/>
+		<?php esc_html_e( 'E-Mail', 'wp-revision-list' ) ?>: <a href="mailto:pete@petenelson.com">pete@petenelson.com</a><br/>
+		<?php esc_html_e( 'Twitter', 'wp-revision-list' ) ?>: <a href="https://twitter.com/GunGeekATX" target="_blank">@GunGeekATX</a><br/>
+		<?php esc_html_e( 'GitHub', 'wp-revision-list' ) ?>: <a href="https://github.com/petenelson/wp-revision-list" target="_blank">https://github.com/petenelson/wp-revision-list</a><br/>
 	</p>
 
 </div>

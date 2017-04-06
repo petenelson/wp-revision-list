@@ -4,7 +4,7 @@ Tags: admin, post, page, custom post type, revisions
 Donate link: http://petenelson.com/
 Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,9 @@ encouraging me to write this plugin, and [Kenzie Moss](https://twitter.com/kenzi
 
 == Changelog ==
 
+= 1.1.6 April 5, 2017 =
+* Fixed a PHP warning with the_title filter when global post was not set
+
 = 1.1.5 December 7, 2015 =
 * Fixed a PHP warning with the_title() on some installs
 
@@ -42,11 +45,8 @@ encouraging me to write this plugin, and [Kenzie Moss](https://twitter.com/kenzi
 
 == Upgrade Notice ==
 
-= 1.1.5 December 7, 2015 =
-* Fixed a PHP warning with the_title() on some installs
-
-= 1.1.4 July 9, 2015 =
-* Fixed a bug that was preventing a custom WP_Query from returning posts
+= 1.1.6 April 5, 2017 =
+* Fixed a PHP warning with the_title filter when global post was not set
 
 
 == Frequently Asked Questions ==

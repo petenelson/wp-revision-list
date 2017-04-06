@@ -26,6 +26,9 @@ Only post types that support revisions work with this plugin.  Make sure you inc
 
 ## Changelog
 
+### 1.1.6 April 5, 2017
+- Fixed a PHP warning with the_title filter when global post was not set
+
 ### 1.1.5 December 7, 2015
 - Fixed a PHP warning with the_title() on some installs
 

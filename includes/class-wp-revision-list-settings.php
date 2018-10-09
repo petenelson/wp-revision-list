@@ -83,7 +83,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 				array( 'key' => $key, 'name' => 'suffix', 'size' => 10, 'maxlength' => 20 ) );
 
 			$items = array();
-			foreach( get_post_types( array(), 'objects' ) as $post_type => $data ) {
+			foreach( get_post_types( array( 'public' => true ), 'objects' ) as $post_type => $data ) {
 				if ( post_type_supports( $post_type, 'revisions' ) ) {
 					$items[ $post_type ] = $data->labels->name . ' (' . $post_type . ')';
 				}
@@ -131,10 +131,15 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			return $args[$setting];
 		}
 
-
+		/**
+		 * Display a settings input field.
+		 *
+		 * @param  array $args List of args.
+		 * @return void
+		 */
 		public function settings_input( $args ) {
 
-			extract( wp_parse_args( $args,
+			$args = wp_parse_args( $args,
 				array(
 					'name' => '',
 					'key' => '',
@@ -146,24 +151,39 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 					'max' => 0,
 					'step' => 1,
 				)
-			) );
+			);
 
+			$key = $args['key'];
+			$name = $args['name'];
+			$type = $args['type'];
+			$size = $args['size'];
+			$maxlength = $args['maxlength'];
 
 			$option = get_option( $key );
-			$value = isset( $option[$name] ) ? esc_attr( $option[$name] ) : '';
+			$value = is_array( $option ) && isset( $option[ $name ] ) ? $option[ $name ] : '';
 
 			$min_max_step = '';
 			if ( $type === 'number' ) {
-				$min = intval( $args['min'] );
-				$max = intval( $args['max'] );
-				$step = intval( $args['step'] );
-				$min_max_step = " step='{$step}' min='{$min}' max='{$max}' ";
+				$min = absint( $args['min'] );
+				$max = absint( $args['max'] );
+				$step = absint( $args['step'] );
+				$min_max_step = sprintf( 'min="%d" max="%d" step="%d"', $min, $max, $step );
 			}
 
-			echo "<div><input id='{$name}' name='{$key}[{$name}]'  type='{$type}' value='" . $value . "' size='{$size}' maxlength='{$maxlength}' {$min_max_step} /></div>";
+			?>
+				<div>
+					<input
+						id="<?php echo esc_attr( $name ); ?>"
+						name="<?php echo esc_attr( "{$key}[{$name}]" ); ?>"
+						type="<?php echo esc_attr( $type ); ?>"
+						value="<?php echo esc_attr( $value ); ?>"
+						size="<?php echo esc_attr( $size ); ?>"
+						maxlength="<?php echo esc_attr( $maxlength ); ?>"
+						<?php echo $min_max_step ?> />
+				</div>
+			<?php
 
-			$this->output_after( $after );
-
+			$this->output_after( $args['after'] );
 		}
 
 
@@ -206,60 +226,9 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 
 		}
 
-
-		public function settings_textarea( $args ) {
-
-			extract( wp_parse_args( $args,
-				array(
-					'name' => '',
-					'key' => '',
-					'rows' => 10,
-					'cols' => 40,
-					'after' => '',
-				)
-			) );
-
-
-			$option = get_option( $key );
-			$value = isset( $option[$name] ) ? esc_attr( $option[$name] ) : '';
-
-			echo "<div><textarea id='{$name}' name='{$key}[{$name}]' rows='{$rows}' cols='{$cols}'>" . $value . "</textarea></div>";
-
-			$this->output_after( $after );
-
-		}
-
-
-		public function settings_yes_no( $args ) {
-
-			extract( wp_parse_args( $args,
-				array(
-					'name' => '',
-					'key' => '',
-					'after' => '',
-				)
-			) );
-
-			$option = get_option( $key );
-			$value = isset( $option[$name] ) ? esc_attr( $option[$name] ) : '';
-
-			if ( empty( $value ) ) {
-				$value = '0';
-			}
-
-			echo '<div>';
-			echo "<label><input id='{$name}_1' name='{$key}[{$name}]'  type='radio' value='1' " . ( '1' === $value ? " checked=\"checked\"" : "" ) . "/>" . __( 'Yes', 'wp-revision-list' ) . "</label> ";
-			echo "<label><input id='{$name}_0' name='{$key}[{$name}]'  type='radio' value='0' " . ( '0' === $value ? " checked=\"checked\"" : "" ) . "/>" . __( 'No', 'wp-revision-list' ) . "</label> ";
-			echo '</div>';
-
-			$this->output_after( $after );
-
-		}
-
-
 		private function output_after( $after ) {
 			if ( !empty( $after ) ) {
-				echo '<div>' . $after . '</div>';
+				echo '<p class="description">' . wp_kses_post( $after ) . '</p>';
 			}
 		}
 
@@ -285,12 +254,6 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 				</form>
 			</div>
 			<?php
-
-			//$settings_updated = filter_input( INPUT_GET, 'settings-updated', FILTER_SANITIZE_STRING );
-			//if ( ! empty( $settings_updated ) ) {
-				//flush_rewrite_rules( );
-			//}
-
 		}
 
 
@@ -320,7 +283,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			}
 
 			if ( ! empty( $output ) ) {
-				echo '<p class="settings-section-header">' . $output . '</p>';
+				echo '<p class="settings-section-header">' . wp_kses_post( $output ) . '</p>';
 			}
 
 		}

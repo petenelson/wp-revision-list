@@ -21,10 +21,13 @@ encouraging me to write this plugin, and [Kenzie Moss](https://twitter.com/kenzi
 ## Frequently Asked Questions
 
 *My custom post type does not show up in the settings?*
-Only post types that support revisions work with this plugin.  Make sure you include "'supports' => array( 'revisions' )" in your register_post_type() call.
+Only public post types that support revisions work with this plugin.  Make sure you include "'supports' => array( 'revisions' )" in your register_post_type() call.
 
 
 ## Changelog
+
+### 1.1.7 October 9, 2018
+- Fixed a PHP notice on the settings page
 
 ### 1.1.6 April 5, 2017
 - Fixed a PHP warning with the_title filter when global post was not set

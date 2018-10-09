@@ -1,17 +1,17 @@
-# Copyright (C) 2015 Pete Nelson <a href="https://twitter.com/GunGeekATX">(@GunGeekATX)</a>
+# Copyright (C) 2018 Pete Nelson <a href="https://twitter.com/GunGeekATX">(@GunGeekATX)</a>
 # This file is distributed under the same license as the WP Revision List package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Revision List 1.1.5\n"
+"Project-Id-Version: WP Revision List 1.1.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-revision-list\n"
-"POT-Creation-Date: 2015-12-07 22:03:11+00:00\n"
+"POT-Creation-Date: 2018-10-09 21:33:09+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"X-Generator: grunt-wp-i18n 0.5.3\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
 
 #: includes/class-wp-revision-list-screen-options.php:38
 msgid "Number of revisions to display:"
@@ -52,16 +52,8 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: includes/class-wp-revision-list-settings.php:251
-msgid "Yes"
-msgstr ""
-
-#: includes/class-wp-revision-list-settings.php:252
-msgid "No"
-msgstr ""
-
+#: includes/class-wp-revision-list-settings.php:237
 #: includes/class-wp-revision-list-settings.php:268
-#: includes/class-wp-revision-list-settings.php:305
 msgid "WP Revision List Settings"
 msgstr ""
 
@@ -69,7 +61,7 @@ msgstr ""
 msgid "WP Revision List"
 msgstr ""
 
-#: includes/class-wp-revision-list-settings.php:282
+#: includes/class-wp-revision-list-settings.php:251
 msgid "Save Settings"
 msgstr ""
 

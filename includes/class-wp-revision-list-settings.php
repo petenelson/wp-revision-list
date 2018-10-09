@@ -160,14 +160,14 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			$maxlength = $args['maxlength'];
 
 			$option = get_option( $key );
-			$value = isset( $option[$name] ) ? esc_attr( $option[$name] ) : '';
+			$value = is_array( $option ) && isset( $option[ $name ] ) ? $option[ $name ] : '';
 
 			$min_max_step = '';
 			if ( $type === 'number' ) {
 				$min = absint( $args['min'] );
 				$max = absint( $args['max'] );
 				$step = absint( $args['step'] );
-				$min_max_step = " step='{$step}' min='{$min}' max='{$max}' ";
+				$min_max_step = sprintf( 'min="%d" max="%d" step="%d"', $min, $max, $step );
 			}
 
 			?>

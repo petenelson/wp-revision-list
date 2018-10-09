@@ -83,7 +83,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 				array( 'key' => $key, 'name' => 'suffix', 'size' => 10, 'maxlength' => 20 ) );
 
 			$items = array();
-			foreach( get_post_types( array(), 'objects' ) as $post_type => $data ) {
+			foreach( get_post_types( array( 'public' => true ), 'objects' ) as $post_type => $data ) {
 				if ( post_type_supports( $post_type, 'revisions' ) ) {
 					$items[ $post_type ] = $data->labels->name . ' (' . $post_type . ')';
 				}
@@ -226,60 +226,9 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 
 		}
 
-
-		public function settings_textarea( $args ) {
-
-			extract( wp_parse_args( $args,
-				array(
-					'name' => '',
-					'key' => '',
-					'rows' => 10,
-					'cols' => 40,
-					'after' => '',
-				)
-			) );
-
-
-			$option = get_option( $key );
-			$value = isset( $option[$name] ) ? esc_attr( $option[$name] ) : '';
-
-			echo "<div><textarea id='{$name}' name='{$key}[{$name}]' rows='{$rows}' cols='{$cols}'>" . $value . "</textarea></div>";
-
-			$this->output_after( $after );
-
-		}
-
-
-		public function settings_yes_no( $args ) {
-
-			extract( wp_parse_args( $args,
-				array(
-					'name' => '',
-					'key' => '',
-					'after' => '',
-				)
-			) );
-
-			$option = get_option( $key );
-			$value = isset( $option[$name] ) ? esc_attr( $option[$name] ) : '';
-
-			if ( empty( $value ) ) {
-				$value = '0';
-			}
-
-			echo '<div>';
-			echo "<label><input id='{$name}_1' name='{$key}[{$name}]'  type='radio' value='1' " . ( '1' === $value ? " checked=\"checked\"" : "" ) . "/>" . __( 'Yes', 'wp-revision-list' ) . "</label> ";
-			echo "<label><input id='{$name}_0' name='{$key}[{$name}]'  type='radio' value='0' " . ( '0' === $value ? " checked=\"checked\"" : "" ) . "/>" . __( 'No', 'wp-revision-list' ) . "</label> ";
-			echo '</div>';
-
-			$this->output_after( $after );
-
-		}
-
-
 		private function output_after( $after ) {
 			if ( !empty( $after ) ) {
-				echo '<div>' . $after . '</div>';
+				echo '<p class="description">' . wp_kses_post( $after ) . '</p>';
 			}
 		}
 
@@ -305,12 +254,6 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 				</form>
 			</div>
 			<?php
-
-			//$settings_updated = filter_input( INPUT_GET, 'settings-updated', FILTER_SANITIZE_STRING );
-			//if ( ! empty( $settings_updated ) ) {
-				//flush_rewrite_rules( );
-			//}
-
 		}
 
 
@@ -340,7 +283,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			}
 
 			if ( ! empty( $output ) ) {
-				echo '<p class="settings-section-header">' . $output . '</p>';
+				echo '<p class="settings-section-header">' . wp_kses_post( $output ) . '</p>';
 			}
 
 		}

@@ -131,10 +131,15 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 			return $args[$setting];
 		}
 
-
+		/**
+		 * Display a settings input field.
+		 *
+		 * @param  array $args List of args.
+		 * @return void
+		 */
 		public function settings_input( $args ) {
 
-			extract( wp_parse_args( $args,
+			$args = wp_parse_args( $args,
 				array(
 					'name' => '',
 					'key' => '',
@@ -146,8 +151,13 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 					'max' => 0,
 					'step' => 1,
 				)
-			) );
+			);
 
+			$key = $args['key'];
+			$name = $args['name'];
+			$type = $args['type'];
+			$size = $args['size'];
+			$maxlength = $args['maxlength'];
 
 			$option = get_option( $key );
 			$value = isset( $option[$name] ) ? esc_attr( $option[$name] ) : '';
@@ -162,8 +172,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 
 			echo "<div><input id='{$name}' name='{$key}[{$name}]'  type='{$type}' value='" . $value . "' size='{$size}' maxlength='{$maxlength}' {$min_max_step} /></div>";
 
-			$this->output_after( $after );
-
+			$this->output_after( $args['after'] );
 		}
 
 

@@ -26,6 +26,9 @@ Only public post types that support revisions work with this plugin.  Make sure 
 
 ## Changelog
 
+### 1.1.8 December 16, 2018
+- Fixed call to undefined get_current_screen() on autosave.
+
 ### 1.1.7 October 9, 2018
 - Fixed a PHP notice on the settings page
 

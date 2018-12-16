@@ -17,10 +17,12 @@ if ( ! class_exists( 'WP_Revision_List_Core' ) ) {
 
 
 		public function is_revision_list_screen( $is_revision_list_screen, $screen = null ) {
-			if ( empty ( $screen ) ) {
-				$screen = get_current_screen();
+			if ( function_exists( 'get_current_screen') ) {
+				if ( empty ( $screen ) ) {
+					$screen = get_current_screen();
+				}
+				$is_revision_list_screen = $screen->base == 'edit' && in_array( $screen->post_type, $this->selected_post_types( array() ) );
 			}
-			$is_revision_list_screen = $screen->base == 'edit' && in_array( $screen->post_type, $this->selected_post_types( array() ) );
 			return $is_revision_list_screen;
 		}
 

@@ -3,8 +3,8 @@ Contributors: gungeekatx
 Tags: admin, post, page, custom post type, revisions
 Donate link: http://petenelson.com/
 Requires at least: 4.0
-Tested up to: 4.9
-Stable tag: 1.1.6
+Tested up to: 5.0
+Stable tag: 1.1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,6 +26,9 @@ encouraging me to write this plugin, and [Kenzie Moss](https://twitter.com/kenzi
 
 
 == Changelog ==
+
+= 1.1.8 December 16, 2018 =
+* Fixed call to undefined get_current_screen() on autosave.
 
 = 1.1.7 October 9, 2018 =
 * Fixed a PHP notice on the settings page

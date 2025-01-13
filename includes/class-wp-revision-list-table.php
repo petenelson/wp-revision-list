@@ -1,5 +1,7 @@
 <?php
 
+use function WPRevisionList\Sanitizers\sanitized_get_field;
+
 if ( !defined( 'ABSPATH' ) ) exit( 'restricted access' );
 
 if ( !class_exists( 'WP_Revision_List_Table' ) ) {
@@ -38,8 +40,8 @@ if ( !class_exists( 'WP_Revision_List_Table' ) ) {
 		private function add_revisions_to_posts( $posts ) {
 
 			$new_post_list = array();
-			$screen = get_current_screen();
-			$is_trash = filter_input( INPUT_GET, 'post_status', FILTER_SANITIZE_STRING );
+			$screen        = get_current_screen();
+			$is_trash      = sanitized_get_field( 'post_status');
 
 			$revisions = $this->get_revisions_for_posts( $posts, $screen->post_type );
 

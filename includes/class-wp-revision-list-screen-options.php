@@ -1,5 +1,7 @@
 <?php
 
+use function WPRevisionList\Sanitizers\sanitized_post_field;
+
 if (!defined( 'ABSPATH' )) exit('restricted access');
 
 if (!class_exists('WP_Revision_List_Screen_Options')) {
@@ -56,7 +58,7 @@ if (!class_exists('WP_Revision_List_Screen_Options')) {
 			// see if this is coming from a screen option 'Apply'
 			// the first step in misc/set_screen_options() is check_admin_referer( 'screen-options-nonce', 'screenoptionnonce' );
 
-			$post_type = sanitize_key( filter_input( INPUT_POST, 'wp_rev_list_post_type_screen_option', FILTER_SANITIZE_STRING ) );
+			$post_type = sanitized_post_field( 'wp_rev_list_post_type_screen_option' );
 
 			if ( $action === 'screen-options-nonce' && $result === 1 && ! empty( $post_type ) ) {
 

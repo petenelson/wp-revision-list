@@ -1,29 +1,31 @@
 {
-  "name": "wp-revision-list",
-  "version": "1.1.5",
-  "description": "WordPress plugin to show revisions when viewing lists of posts, pages, or custom post types in the admin dashboard",
-  "main": "Gruntfile.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/petenelson/wp-revision-list.git"
-  },
-  "keywords": [
-    "wordpress",
-    "dashboard"
-  ],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/petenelson/wp-revision-list/issues"
-  },
-  "homepage": "https://github.com/petenelson/wp-revision-list",
-  "devDependencies": {
-    "grunt": "^1",
-    "grunt-contrib-clean": "^2",
-    "grunt-contrib-copy": "^1",
-    "grunt-wp-i18n": "^1"
-  }
+	"name": "wp-revision-list",
+	"version": "1.1.5",
+	"description": "WordPress plugin to show revisions when viewing lists of posts, pages, or custom post types in the admin dashboard",
+	"main": "Gruntfile.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/petenelson/wp-revision-list.git"
+	},
+	"keywords": [
+		"wordpress",
+		"dashboard"
+	],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/petenelson/wp-revision-list/issues"
+	},
+	"homepage": "https://github.com/petenelson/wp-revision-list",
+	"devDependencies": {
+		"grunt": "^1.6.1",
+		"grunt-contrib-clean": "^2.0.1",
+		"grunt-contrib-copy": "^1.0.0",
+		"grunt-potomo": "^3.5.0",
+		"grunt-wp-i18n": "^1.0.3",
+		"grunt-wp-readme-to-markdown": "^2.1.0"
+	}
 }

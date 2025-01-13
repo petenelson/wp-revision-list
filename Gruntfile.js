@@ -16,6 +16,17 @@ module.exports = function( grunt ) {
 			wp: [ "release" ]
 		},
 
+		wp_readme_to_markdown: {
+			options: {
+				screenshot_url: "https://raw.githubusercontent.com/petenelson/wp-revision-list/trunk/assets/{screenshot}.png",
+				},
+			your_target: {
+				files: {
+					'README.md': 'readme.txt'
+				}
+			},
+		},
+
 		copy:   {
 
 			// create release for WordPress repository
@@ -43,11 +54,11 @@ module.exports = function( grunt ) {
 
 	} ); // grunt.initConfig
 
-
 	// Load tasks
 	var tasks = [
 		'grunt-contrib-clean',
 		'grunt-contrib-copy',
+		'grunt-wp-readme-to-markdown',
 		'grunt-wp-i18n'
 		];
 
@@ -55,12 +66,12 @@ module.exports = function( grunt ) {
 		grunt.loadNpmTasks( tasks[ i ] );
 	};
 
-
 	// Register tasks
+	// Register tasks
+	grunt.registerTask( 'readme', ['wp_readme_to_markdown'] );
 
 	// create release for WordPress repository
 	grunt.registerTask( 'wp', [ 'makepot', 'clean', 'copy' ] );
 
 	grunt.util.linefeed = '\n';
-
 };

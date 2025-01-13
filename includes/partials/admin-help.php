@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) die( 'restricted access' );
 
 <div class="wp-revision-list-help">
 
-	<h3 class="title"><?php _e( 'Contact', 'wp-revision-list' ); ?></h3>
+	<h3 class="title"><?php esc_html_e( 'Contact', 'wp-revision-list' ); ?></h3>
 	<p>
 		<?php esc_html_e( 'E-Mail', 'wp-revision-list' ) ?>: <a href="mailto:pete@petenelson.com">pete@petenelson.com</a><br/>
 		<?php esc_html_e( 'Twitter', 'wp-revision-list' ) ?>: <a href="https://twitter.com/CodeGeekATX">@CodeGeekATX</a><br/>

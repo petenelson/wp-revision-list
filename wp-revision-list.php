@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Revision List
 Description: Show revisions when viewing lists of posts, pages, or custom post types in the admin dashboard
-Version: 1.1.8
+Version: 1.1.9
 Plugin URI: https://github.com/petenelson/wp-revision-list
 Author: Pete Nelson <a href="https://twitter.com/CodeGeekATX">(@CodeGeekATX)</a>
 Text Domain: wp-revision-list
@@ -10,6 +10,19 @@ Domain Path: /lang
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit( 'restricted access' );
+
+// Useful global constants.
+define( 'WP_REVISION_LIST_FILE', __FILE__ );
+define( 'WP_REVISION_LIST_PATH', plugin_dir_path( WP_REVISION_LIST_FILE ) );
+define( 'WP_REVISION_LIST_INC', WP_REVISION_LIST_PATH . 'includes/' );
+
+$files = [
+	'sanitizers.php',
+];
+
+foreach( $files as $file ) {
+	require_once WP_REVISION_LIST_INC . $file;
+}
 
 // load the text domain
 add_action( 'plugins_loaded', 'wp_revision_list_load_text_domain' );
@@ -23,9 +36,8 @@ if ( ! function_exists( 'wp_revision_list_load_text_domain' ) ) {
 // include required files
 $includes = array( 'core', 'settings', 'screen-options', 'table' );
 foreach ( $includes as $include ) {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wp-revision-list-' . $include . '.php';
+	require_once WP_REVISION_LIST_INC . 'class-wp-revision-list-' . $include . '.php';
 }
-
 
 // load our classes, hook them to WordPress
 if ( class_exists( 'WP_Revision_List_Core' ) ) {

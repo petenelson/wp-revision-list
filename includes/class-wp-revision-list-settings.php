@@ -1,5 +1,7 @@
 <?php
 
+use function WPRevisionList\Sanitizers\sanitized_get_field;
+
 if ( ! defined( 'ABSPATH' ) ) die( 'restricted access' );
 
 if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
@@ -258,7 +260,7 @@ if ( ! class_exists( 'WP_Revision_List_Settings' ) ) {
 
 
 		private function current_tab() {
-			$current_tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING );
+			$current_tab = sanitized_get_field( 'tab' );
 			return empty( $current_tab ) ? $this->settings_key_general : $current_tab;
 		}
 
